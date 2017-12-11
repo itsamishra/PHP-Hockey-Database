@@ -1,0 +1,241 @@
+\c amishr5assign2db;
+You are now connected to database "amishr5assign2db" as user "amishr5".
+\copy Team FROM '/gaul/s1/student/2017/amishr5/html/assignment3/Postgres Scripts/teamdata.txt' WITH (DELIMITER '|');
+INSERT INTO Team VALUES ('99', 'Colorado', 'Avalanche');
+INSERT 0 1
+INSERT INTO Team VALUES ('88', 'New York', 'Rangers');
+INSERT 0 1
+INSERT INTO Team VALUES ('78', 'Ottawa', 'Senators');
+INSERT 0 1
+INSERT INTO Team VALUES ('66', 'Edmonton', 'Oilers');
+INSERT 0 1
+INSERT INTO Team VALUES ('55', 'Pitsburg', 'Penguins');
+INSERT 0 1
+INSERT INTO Official VALUES ('99', 'Hugh', 'Grant', 'Toronto');
+INSERT 0 1
+INSERT INTO Official VALUES ('22', 'Courtney', 'Cox', 'New York');
+INSERT 0 1
+INSERT INTO Official VALUES ('33', 'Rosie', 'Odonnell', 'Ottawa');
+INSERT 0 1
+INSERT INTO Official VALUES ('66', 'David', 'Letterman', 'Edmonton');
+INSERT 0 1
+INSERT INTO Official VALUES ('11', 'Regis', 'Philbin',  'Toronto');
+INSERT 0 1
+INSERT INTO Official VALUES ('12', 'Rosie', 'Cox',  'Ottawa');
+INSERT 0 1
+INSERT INTO Official VALUES ('55', 'Jeffrey', 'Hinton',  'Toronto');
+INSERT 0 1
+INSERT INTO Game VALUES ('21','Feb 18, 2018','Toronto','11');
+INSERT 0 1
+INSERT INTO Game VALUES ('31','Dec 20, 2018','Toronto','33');
+INSERT 0 1
+INSERT INTO Game VALUES ('12','Dec 24, 2018','Ottawa','22');
+INSERT 0 1
+INSERT INTO Game VALUES ('15','Dec 20, 2018','New York','11');
+INSERT 0 1
+INSERT INTO Game VALUES ('13','Jan 7, 2018','New York','12');
+INSERT 0 1
+INSERT INTO Game VALUES ('10','Dec 20, 2018','Ottawa','12');
+INSERT 0 1
+INSERT INTO Game VALUES ('14','Jan 8, 2018','Toronto','33');
+INSERT 0 1
+INSERT INTO Officiates VALUES (21, 12);
+INSERT 0 1
+INSERT INTO Officiates VALUES (31, 22);
+INSERT 0 1
+INSERT INTO Officiates VALUES (31, 12);
+INSERT 0 1
+INSERT INTO Officiates VALUES (12, 33);
+INSERT 0 1
+INSERT INTO Officiates VALUES (12, 66);
+INSERT 0 1
+INSERT INTO Officiates VALUES (15, 22);
+INSERT 0 1
+INSERT INTO Officiates VALUES (13, 33);
+INSERT 0 1
+INSERT INTO Officiates VALUES (10, 11);
+INSERT 0 1
+INSERT INTO Officiates VALUES (10, 33);
+INSERT 0 1
+INSERT INTO Officiates VALUES (14, 11);
+INSERT 0 1
+INSERT INTO Plays VALUES (12, 21, 3);
+INSERT 0 1
+INSERT INTO Plays VALUES (11, 21, 2);
+INSERT 0 1
+INSERT INTO Plays VALUES (12, 31, 6);
+INSERT 0 1
+INSERT INTO Plays VALUES (66, 31, 2);
+INSERT 0 1
+INSERT INTO Plays VALUES (78, 12, 2);
+INSERT 0 1
+INSERT INTO Plays VALUES (88, 12, 3);
+INSERT 0 1
+INSERT INTO Plays VALUES (88, 15, 1);
+INSERT 0 1
+INSERT INTO Plays VALUES (11, 15, 2);
+INSERT 0 1
+INSERT INTO Plays VALUES (66, 13, 5);
+INSERT 0 1
+INSERT INTO Plays VALUES (12, 13, 2);
+INSERT 0 1
+INSERT INTO Plays VALUES (66, 10, 4);
+INSERT 0 1
+INSERT INTO Plays VALUES (88, 10, 2);
+INSERT 0 1
+INSERT INTO Plays VALUES (12, 14, 3);
+INSERT 0 1
+INSERT INTO Plays VALUES (11, 14, 1);
+INSERT 0 1
+SELECT * FROM Team;
+ teamid |   teamcity   |   teamname   
+--------+--------------+--------------
+ 18     | London       | Knights
+ 19     | Chicago      | Black Hawks
+ 08     | Philadelphia | Flyers
+ 12     | Toronto      | Maple Leaves
+ 11     | Detroit      | Red Wings
+ 99     | Colorado     | Avalanche
+ 88     | New York     | Rangers
+ 78     | Ottawa       | Senators
+ 66     | Edmonton     | Oilers
+ 55     | Pitsburg     | Penguins
+(10 rows)
+
+SELECT * FROM Official;
+ officialid | firstname | lastname  | homecity 
+------------+-----------+-----------+----------
+ 99         | Hugh      | Grant     | Toronto
+ 22         | Courtney  | Cox       | New York
+ 33         | Rosie     | Odonnell  | Ottawa
+ 66         | David     | Letterman | Edmonton
+ 11         | Regis     | Philbin   | Toronto
+ 12         | Rosie     | Cox       | Ottawa
+ 55         | Jeffrey   | Hinton    | Toronto
+(7 rows)
+
+SELECT * FROM Game;
+ gameid |   gamedate   | gamecity | headofficialid 
+--------+--------------+----------+----------------
+ 21     | Feb 18, 2018 | Toronto  | 11
+ 31     | Dec 20, 2018 | Toronto  | 33
+ 12     | Dec 24, 2018 | Ottawa   | 22
+ 15     | Dec 20, 2018 | New York | 11
+ 13     | Jan 7, 2018  | New York | 12
+ 10     | Dec 20, 2018 | Ottawa   | 12
+ 14     | Jan 8, 2018  | Toronto  | 33
+(7 rows)
+
+SELECT * FROM Plays;
+ teamid | gameid | score 
+--------+--------+-------
+ 12     | 21     |     3
+ 11     | 21     |     2
+ 12     | 31     |     6
+ 66     | 31     |     2
+ 78     | 12     |     2
+ 88     | 12     |     3
+ 88     | 15     |     1
+ 11     | 15     |     2
+ 66     | 13     |     5
+ 12     | 13     |     2
+ 66     | 10     |     4
+ 88     | 10     |     2
+ 12     | 14     |     3
+ 11     | 14     |     1
+(14 rows)
+
+SELECT * FROM Officiates;
+ gameid | officialid 
+--------+------------
+ 21     | 12
+ 31     | 22
+ 31     | 12
+ 12     | 33
+ 12     | 66
+ 15     | 22
+ 13     | 33
+ 10     | 11
+ 10     | 33
+ 14     | 11
+(10 rows)
+
+UPDATE Team SET teamname='Maple Leafs' WHERE teamcity='Toronto';
+UPDATE 1
+UPDATE Plays SET score=3 WHERE teamid = (SELECT teamid FROM Team WHERE teamname='Maple Leafs');
+UPDATE 4
+UPDATE Game SET gamedate='Jan 1, 2018' WHERE gameid = (SELECT gameid FROM Officiates WHERE officialid = (SELECT officialid FROM official WHERE firstname='David' AND lastname='Letterman'));
+UPDATE 1
+SELECT * FROM Team;
+ teamid |   teamcity   |  teamname   
+--------+--------------+-------------
+ 18     | London       | Knights
+ 19     | Chicago      | Black Hawks
+ 08     | Philadelphia | Flyers
+ 11     | Detroit      | Red Wings
+ 99     | Colorado     | Avalanche
+ 88     | New York     | Rangers
+ 78     | Ottawa       | Senators
+ 66     | Edmonton     | Oilers
+ 55     | Pitsburg     | Penguins
+ 12     | Toronto      | Maple Leafs
+(10 rows)
+
+SELECT * FROM Official;
+ officialid | firstname | lastname  | homecity 
+------------+-----------+-----------+----------
+ 99         | Hugh      | Grant     | Toronto
+ 22         | Courtney  | Cox       | New York
+ 33         | Rosie     | Odonnell  | Ottawa
+ 66         | David     | Letterman | Edmonton
+ 11         | Regis     | Philbin   | Toronto
+ 12         | Rosie     | Cox       | Ottawa
+ 55         | Jeffrey   | Hinton    | Toronto
+(7 rows)
+
+SELECT * FROM Game;
+ gameid |   gamedate   | gamecity | headofficialid 
+--------+--------------+----------+----------------
+ 21     | Feb 18, 2018 | Toronto  | 11
+ 31     | Dec 20, 2018 | Toronto  | 33
+ 15     | Dec 20, 2018 | New York | 11
+ 13     | Jan 7, 2018  | New York | 12
+ 10     | Dec 20, 2018 | Ottawa   | 12
+ 14     | Jan 8, 2018  | Toronto  | 33
+ 12     | Jan 1, 2018  | Ottawa   | 22
+(7 rows)
+
+SELECT * FROM Plays;
+ teamid | gameid | score 
+--------+--------+-------
+ 11     | 21     |     2
+ 66     | 31     |     2
+ 78     | 12     |     2
+ 88     | 12     |     3
+ 88     | 15     |     1
+ 11     | 15     |     2
+ 66     | 13     |     5
+ 66     | 10     |     4
+ 88     | 10     |     2
+ 11     | 14     |     1
+ 12     | 21     |     3
+ 12     | 31     |     3
+ 12     | 13     |     3
+ 12     | 14     |     3
+(14 rows)
+
+SELECT * FROM Officiates;
+ gameid | officialid 
+--------+------------
+ 21     | 12
+ 31     | 22
+ 31     | 12
+ 12     | 33
+ 12     | 66
+ 15     | 22
+ 13     | 33
+ 10     | 11
+ 10     | 33
+ 14     | 11
+(10 rows)
+

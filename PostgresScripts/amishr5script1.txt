@@ -1,0 +1,13 @@
+SELECT datname FROM pg_database WHERE pg_get_userbyid(datdba) = current_user;
+DROP DATABASE IF EXISTS amishr5assign2db;
+CREATE DATABASE amishr5assign2db;
+\c amishr5assign2db;
+REVOKE CONNECT ON DATABASE amishr5assign2db FROM public;
+GRANT CONNECT ON DATABASE amishr5assign2db to lreid, mshirpou, mfinnie3, mshermin, yliu888;
+\dt;
+CREATE TABLE Team(teamid CHAR(2) NOT NULL, teamcity TEXT, teamname TEXT, PRIMARY KEY(teamid));
+CREATE TABLE Official(officialid CHAR(2) NOT NULL, firstname TEXT, lastname TEXT, homecity TEXT, PRIMARY KEY(officialid));
+CREATE TABLE Game(gameid CHAR(2) NOT NULL, gamedate TEXT, gamecity TEXT, headofficialid CHAR(2), FOREIGN KEY(headofficialid) REFERENCES Official(officialid) ON DELETE RESTRICT, PRIMARY KEY(gameid));
+CREATE TABLE Plays(teamid CHAR(2) NOT NULL, gameid CHAR(2) NOT NULL, score INT, FOREIGN KEY(teamid) REFERENCES Team(teamid) ON DELETE RESTRICT, FOREIGN KEY(gameid) REFERENCES Game(gameid) ON DELETE RESTRICT, PRIMARY KEY(teamid, gameid));
+CREATE TABLE Officiates(gameid CHAR(2) NOT NULL, officialid CHAR(2) NOT NULL, FOREIGN KEY(gameid) REFERENCES Game(gameid) ON DELETE RESTRICT, FOREIGN KEY(officialid) REFERENCES Official(officialid) ON DELETE RESTRICT, PRIMARY KEY(gameid, officialid));
+\dt;

@@ -1,0 +1,47 @@
+SELECT datname FROM pg_database WHERE pg_get_userbyid(datdba) = current_user;
+     datname      
+------------------
+ amishr5
+ amishr5assign2db
+ amishr5vetoffice
+ favouritetv
+(4 rows)
+
+DROP DATABASE IF EXISTS amishr5assign2db;
+DROP DATABASE
+CREATE DATABASE amishr5assign2db;
+CREATE DATABASE
+\c amishr5assign2db;
+You are now connected to database "amishr5assign2db" as user "amishr5".
+REVOKE CONNECT ON DATABASE amishr5assign2db FROM public;
+REVOKE
+GRANT CONNECT ON DATABASE amishr5assign2db to lreid, mshirpou, mfinnie3, mshermin, yliu888;
+GRANT
+\dt;
+No relations found.
+CREATE TABLE Team(teamid CHAR(2) NOT NULL, teamcity TEXT, teamname TEXT, PRIMARY KEY(teamid));
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "team_pkey" for table "team"
+CREATE TABLE
+CREATE TABLE Official(officialid CHAR(2) NOT NULL, firstname TEXT, lastname TEXT, homecity TEXT, PRIMARY KEY(officialid));
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "official_pkey" for table "official"
+CREATE TABLE
+CREATE TABLE Game(gameid CHAR(2) NOT NULL, gamedate TEXT, gamecity TEXT, headofficialid CHAR(2), FOREIGN KEY(headofficialid) REFERENCES Official(officialid) ON DELETE RESTRICT, PRIMARY KEY(gameid));
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "game_pkey" for table "game"
+CREATE TABLE
+CREATE TABLE Plays(teamid CHAR(2) NOT NULL, gameid CHAR(2) NOT NULL, score INT, FOREIGN KEY(teamid) REFERENCES Team(teamid) ON DELETE RESTRICT, FOREIGN KEY(gameid) REFERENCES Game(gameid) ON DELETE RESTRICT, PRIMARY KEY(teamid, gameid));
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "plays_pkey" for table "plays"
+CREATE TABLE
+CREATE TABLE Officiates(gameid CHAR(2) NOT NULL, officialid CHAR(2) NOT NULL, FOREIGN KEY(gameid) REFERENCES Game(gameid) ON DELETE RESTRICT, FOREIGN KEY(officialid) REFERENCES Official(officialid) ON DELETE RESTRICT, PRIMARY KEY(gameid, officialid));
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "officiates_pkey" for table "officiates"
+CREATE TABLE
+\dt;
+           List of relations
+ Schema |    Name    | Type  |  Owner  
+--------+------------+-------+---------
+ public | game       | table | amishr5
+ public | official   | table | amishr5
+ public | officiates | table | amishr5
+ public | plays      | table | amishr5
+ public | team       | table | amishr5
+(5 rows)
+
